@@ -26,10 +26,10 @@ public class ClientEvents {
         if (event.getScreen() instanceof InventoryScreen inventoryScreen) {
 
             // Botão Esquerdo envia pacote com "+1"
-            CelesthydButtonAction leftClickAction = (x, y, z) -> new ModifyTestAttachmentPayload(1);
-            
+            CelesthydButtonAction leftClickAction = (x, y, z, isShiftDown) -> new ModifyTestAttachmentPayload(1);
+
             // Botão Direito envia pacote com "-1"
-            CelesthydButtonAction rightClickAction = (x, y, z) -> new ModifyTestAttachmentPayload(-1);
+            CelesthydButtonAction rightClickAction = (x, y, z, isShiftDown) -> new ModifyTestAttachmentPayload(-1);
 
             CelesthydButton testButton = new CelesthydButton(
                     inventoryScreen,

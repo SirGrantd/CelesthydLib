@@ -63,15 +63,6 @@ public class CelesthydButton extends ImageButton {
         this.setX(parentGui.getLeftPos() + xOffset);
         this.setY(parentGui.getTopPos() + yOffset);
 
-        // if (parentGui instanceof CreativeModeInventoryScreen creativeScreen) {
-        //     boolean isInventoryTab = creativeScreen.isInventoryOpen();
-        //     this.active = isInventoryTab;
-        //     this.visible = isInventoryTab;
-        //     if (!isInventoryTab) {
-        //         return;
-        //     }
-        // }
-
         super.extractContents(graphics, mouseX, mouseY, partialTicks);
     }
 
@@ -93,7 +84,7 @@ public class CelesthydButton extends ImageButton {
 
         if (actionToRun != null) {
             this.playDownSound(Minecraft.getInstance().getSoundManager());
-            actionToRun.sendToServer(this.parentGui.getMinecraft().player);
+            actionToRun.sendToServer(this.parentGui.getMinecraft().player, event.buttonInfo().hasShiftDown());
             return true;
         }
 
