@@ -14,6 +14,10 @@ public class TestAttachment implements ISyncableAttachment {
         this.counter = 0;
     }
 
+    public TestAttachment(int counter) {
+        this.counter = counter;
+    }
+
     public void addCounter(int amount) {
         this.counter += amount;
     }

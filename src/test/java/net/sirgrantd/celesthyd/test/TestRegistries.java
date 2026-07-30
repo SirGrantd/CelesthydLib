@@ -15,7 +15,8 @@ import java.util.function.Supplier;
 @EventBusSubscriber(modid = CelesthydLib.MOD_ID)
 public class TestRegistries {
 
-    private static final AttachmentType<TestAttachment> ATTACHMENT = AttachmentType.serializable(TestAttachment::new)
+    private static final AttachmentType<TestAttachment> ATTACHMENT = AttachmentType
+            .serializable(() -> new TestAttachment())
             .copyOnDeath().build();
 
     public static final Supplier<AttachmentType<TestAttachment>> TEST_ATTACHMENT = () -> ATTACHMENT;

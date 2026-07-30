@@ -3,6 +3,7 @@ package net.sirgrantd.celesthyd.test;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
@@ -32,11 +33,15 @@ public class NetworkTestRegistration {
                 SyncTestAttachmentPayload.TYPE,
                 SyncTestAttachmentPayload.STREAM_CODEC,
                 (payload, context) -> CelesthydPayloadHandler.handleClientBound(payload, context, (p, ctx) -> {
-                    if (Minecraft.getInstance().player != null) {
-                        Minecraft.getInstance().player.sendSystemMessage(
-                                Component.literal(
-                                        "§b[Attachment Sync] §fO seu contador no cliente agora é: " + p.counter()));
+                    Player player = ctx.player();
+                    if (player != null) {
+                        player.setData(TestRegistries.TEST_ATTACHMENT.get(), new TestAttachment(p.counter()));
                     }
+                    // if (Minecraft.getInstance().player != null) {
+                    // Minecraft.getInstance().player.sendSystemMessage(
+                    // Component.literal(
+                    // "§b[Attachment Sync] §fO seu contador no cliente agora é: " + p.counter()));
+                    // }
                 }));
 
         registry.registerServerBound(

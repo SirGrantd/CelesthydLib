@@ -1,9 +1,11 @@
 package net.sirgrantd.celesthyd.gui;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.player.Player;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.bus.api.EventPriority;
@@ -12,10 +14,13 @@ import net.neoforged.neoforge.client.event.ScreenEvent;
 import net.sirgrantd.celesthyd.CelesthydLib;
 import net.sirgrantd.celesthyd.api.gui.CelesthydImage;
 import net.sirgrantd.celesthyd.api.gui.CelesthydText;
+import net.sirgrantd.celesthyd.test.TestAttachment;
+import net.sirgrantd.celesthyd.test.TestRegistries;
 
 @EventBusSubscriber({ Dist.CLIENT })
 public class DisplayClient {
-    private static final Identifier DUMMY_TEXTURE = Identifier.fromNamespaceAndPath(CelesthydLib.MOD_ID, "textures/gui/sprites/button_highlighted.png");
+    private static final Identifier DUMMY_TEXTURE = Identifier.fromNamespaceAndPath(CelesthydLib.MOD_ID,
+            "textures/gui/sprites/button_highlighted.png");
 
     @SubscribeEvent(priority = EventPriority.NORMAL)
     public static void eventHandler(ScreenEvent.Render.Post event) {
@@ -24,7 +29,11 @@ public class DisplayClient {
 
         if (isInventory) {
             AbstractContainerScreen<?> gui = (AbstractContainerScreen<?>) screen;
-            String text = "Hello World!";
+
+            Player player = Minecraft.getInstance().player;
+            TestAttachment attachment = player.getData(TestRegistries.TEST_ATTACHMENT.get());
+            int counter = attachment.getCounter();
+            String text = String.valueOf(counter);
 
             CelesthydImage sgImage = new CelesthydImage(gui, 50, -25, DUMMY_TEXTURE);
             sgImage.extractContents(event.getGuiGraphics(), 20, 20);
