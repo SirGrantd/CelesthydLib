@@ -32,7 +32,6 @@ public class LibRegistries {
                 ShowToastPayload.TYPE,
                 ShowToastPayload.STREAM_CODEC,
                 (payload, context) -> CelesthydPayloadHandler.handleClientBound(payload, context, (p, ctx) -> {
-                    // Delegamos para a classe segura!
                     ToastHelper.display(p);
                 }));
     }

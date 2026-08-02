@@ -1,10 +1,14 @@
 package net.sirgrantd.celesthyd.gui;
 
+import java.util.function.Supplier;
+
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.player.Player;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -13,6 +17,8 @@ import net.sirgrantd.celesthyd.CelesthydLib;
 import net.sirgrantd.celesthyd.api.gui.CelesthydButtonAction;
 import net.sirgrantd.celesthyd.api.gui.CelesthydButton;
 import net.sirgrantd.celesthyd.test.ModifyTestAttachmentPayload;
+import net.sirgrantd.celesthyd.test.TestAttachment;
+import net.sirgrantd.celesthyd.test.TestRegistries;
 
 @EventBusSubscriber(modid = CelesthydLib.MOD_ID, value = Dist.CLIENT)
 public class ClientEvents {
@@ -31,6 +37,21 @@ public class ClientEvents {
             // Botão Direito envia pacote com "-1"
             CelesthydButtonAction rightClickAction = (x, y, z, isShiftDown) -> new ModifyTestAttachmentPayload(-1);
 
+            Supplier<Component> tooltipText = () -> Component.literal("Pressione Shift para mais informações");
+
+            Supplier<Component> tooltipTextControl = () -> {
+                if (inventoryScreen.getMinecraft().player != null) {
+                    Player player = Minecraft.getInstance().player;
+                    TestAttachment attachment = player.getData(TestRegistries.TEST_ATTACHMENT.get());
+                    int counter = attachment.getCounter();
+                    String up = String.valueOf(counter + 1);
+                    String down = String.valueOf(counter - 1);
+
+                    return Component.literal("Contador: " + counter + " (Up: " + up + ", Down: " + down + ")");
+                }
+                return Component.literal("Pressione Shift para mais informações");
+            };
+
             CelesthydButton testButton = new CelesthydButton(
                     inventoryScreen,
                     5, -25,
@@ -41,7 +62,8 @@ public class ClientEvents {
                     leftClickAction,
                     rightClickAction,
                     () -> SoundEvents.UI_BUTTON_CLICK.value(),
-                    Component.literal("Esq=+1 | Dir=-1 (Testar Attachment)"));
+                    tooltipText,
+                    tooltipTextControl);
 
             event.addListener(testButton);
         }

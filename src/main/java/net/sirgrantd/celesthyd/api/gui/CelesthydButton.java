@@ -24,6 +24,9 @@ public class CelesthydButton extends ImageButton {
 
     private final Supplier<SoundEvent> clickSoundSupplier;
 
+    private final Supplier<Component> tooltipText;
+    private final Supplier<Component> tooltipLongText;
+
     public CelesthydButton(
             AbstractContainerScreen<?> parentGui,
             int xOffset,
@@ -36,7 +39,8 @@ public class CelesthydButton extends ImageButton {
             CelesthydButtonAction leftClickAction,
             CelesthydButtonAction rightClickAction,
             Supplier<SoundEvent> clickSoundSupplier,
-            Component tooltipText) {
+            Supplier<Component> tooltipText,
+            Supplier<Component> tooltipTextControl) {
         super(xIn, yIn, widthIn, heightIn, sprites, (btn) -> {
         });
 
@@ -48,9 +52,10 @@ public class CelesthydButton extends ImageButton {
         this.rightClickAction = rightClickAction;
         this.clickSoundSupplier = clickSoundSupplier;
 
-        if (tooltipText != null) {
-            this.setTooltip(Tooltip.create(tooltipText));
-        }
+        this.tooltipText = tooltipText != null ? tooltipText : () -> Component.literal("");
+        this.tooltipLongText = tooltipTextControl != null ? tooltipTextControl : () -> tooltipText.get();
+
+        this.setTooltip(Tooltip.create(tooltipText.get()));
     }
 
     @Override
@@ -62,6 +67,12 @@ public class CelesthydButton extends ImageButton {
     public void extractContents(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
         this.setX(parentGui.getLeftPos() + xOffset);
         this.setY(parentGui.getTopPos() + yOffset);
+
+        if (Minecraft.getInstance().hasControlDown()) {
+            this.setTooltip(Tooltip.create(this.tooltipLongText.get()));
+        } else {
+            this.setTooltip(Tooltip.create(this.tooltipText.get()));
+        }
 
         super.extractContents(graphics, mouseX, mouseY, partialTicks);
     }
