@@ -49,10 +49,6 @@ public final class CelesthydApi {
             return CelesthydInventoryUtils.countItems(container, item);
         }
 
-        public static int countEmptySlots(Container container) {
-            return CelesthydInventoryUtils.countEmptySlots(container);
-        }
-
         public static int getAvailableSpaceForItem(Container container, Item item) {
             return CelesthydInventoryUtils.getAvailableSpaceForItem(container, item);
         }

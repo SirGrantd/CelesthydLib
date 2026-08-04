@@ -22,8 +22,9 @@ public final class CelesthydInventoryUtils {
         return count;
     }
 
-    public static int countEmptySlots(Container container) {
-        int count = 0;
+    public static int getAvailableSpaceForItem(Container container, Item item) {
+        int availableSpace = 0;
+        int defaultMaxStack = item.getDefaultMaxStackSize();
 
         int limit = (container instanceof Inventory)
                 ? 36
@@ -31,26 +32,15 @@ public final class CelesthydInventoryUtils {
 
         for (int i = 0; i < limit; i++) {
             ItemStack stack = container.getItem(i);
+
             if (stack.isEmpty()) {
-                count++;
+                availableSpace += defaultMaxStack;
+            } else if (stack.getItem() == item) {
+                availableSpace += (stack.getMaxStackSize() - stack.getCount());
             }
         }
-        return count;
-    }
 
-    public static int getAvailableSpaceForItem(Container container, Item item) {
-        int count = 0;
-        int maxStackSize = item.getDefaultMaxStackSize();
-
-        count += countEmptySlots(container) * maxStackSize;
-
-        for (int i = 0; i < container.getContainerSize(); i++) {
-            ItemStack stack = container.getItem(i);
-            if (!stack.isEmpty() && stack.getItem() == item) {
-                count += stack.getMaxStackSize() - stack.getCount();
-            }
-        }
-        return count;
+        return availableSpace;
     }
 
     public static void addItemsFromInventory(Player player, Item item, int quantity) {
