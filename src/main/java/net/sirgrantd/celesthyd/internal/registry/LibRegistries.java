@@ -8,9 +8,11 @@ import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.sirgrantd.celesthyd.CelesthydLib;
+import net.sirgrantd.celesthyd.api.gui.CelesthydBaseMenu;
 import net.sirgrantd.celesthyd.internal.loot.CelesthydLootModifier;
 import net.sirgrantd.celesthyd.internal.network.CelesthydNetworkRegistry;
 import net.sirgrantd.celesthyd.internal.network.CelesthydPayloadHandler;
+import net.sirgrantd.celesthyd.internal.network.gui.SyncMenuDataPayload;
 import net.sirgrantd.celesthyd.internal.network.toast.ShowToastPayload;
 import net.sirgrantd.celesthyd.internal.network.toast.ToastHelper;
 
@@ -33,6 +35,18 @@ public class LibRegistries {
                 ShowToastPayload.STREAM_CODEC,
                 (payload, context) -> CelesthydPayloadHandler.handleClientBound(payload, context, (p, ctx) -> {
                     ToastHelper.display(p);
+                }));
+
+        registry.registerClientBound(
+                SyncMenuDataPayload.TYPE,
+                SyncMenuDataPayload.STREAM_CODEC,
+                (payload, context) -> CelesthydPayloadHandler.handleClientBound(payload, context, (p, ctx) -> {
+                    if (net.minecraft.client.Minecraft
+                            .getInstance().player.containerMenu instanceof CelesthydBaseMenu menu) {
+                        if (menu.containerId == p.containerId()) {
+                            menu.updateDataFromNetwork(p.key(), p.value());
+                        }
+                    }
                 }));
     }
 }
