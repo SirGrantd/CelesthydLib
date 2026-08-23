@@ -1,7 +1,7 @@
 package net.sirgrantd.celesthyd.gui;
 
 import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.MenuType;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -21,7 +21,7 @@ public class TestGuiRegistries {
         @SubscribeEvent
         public static void onRegisterMenus(RegisterEvent event) {
                 event.register(Registries.MENU, helper -> {
-                        helper.register(Identifier.fromNamespaceAndPath(CelesthydLib.MOD_ID, "test_menu"),
+                        helper.register(ResourceLocation.fromNamespaceAndPath(CelesthydLib.MOD_ID, "test_menu"),
                                         TEST_MENU_TYPE);
                 });
         }

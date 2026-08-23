@@ -59,9 +59,4 @@ public record CelesthydLootModifier(List<LootItemCondition> conditions, List<Cel
     public MapCodec<? extends IGlobalLootModifier> codec() {
         return CODEC;
     }
-
-    @Override
-    public int priority() {
-        return 0;
-    }
 }

@@ -1,6 +1,6 @@
 package net.sirgrantd.celesthyd.test;
 
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -24,7 +24,7 @@ public class TestRegistries {
     @SubscribeEvent
     public static void onRegister(RegisterEvent event) {
         event.register(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, helper -> {
-            helper.register(Identifier.fromNamespaceAndPath(CelesthydLib.MOD_ID, "test_attachment"), ATTACHMENT);
+            helper.register(ResourceLocation.fromNamespaceAndPath(CelesthydLib.MOD_ID, "test_attachment"), ATTACHMENT);
         });
     }
 

@@ -1,12 +1,12 @@
 package net.sirgrantd.celesthyd.api.gui;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.WidgetSprites;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.network.chat.Component;
@@ -64,30 +64,26 @@ public class CelesthydButton extends ImageButton {
     }
 
     @Override
-    public void extractContents(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float partialTicks) {
-        this.setX(parentGui.getLeftPos() + xOffset);
-        this.setY(parentGui.getTopPos() + yOffset);
+    public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+        this.setX(parentGui.getGuiLeft() + xOffset);
+        this.setY(parentGui.getGuiTop() + yOffset);
 
-        if (Minecraft.getInstance().hasControlDown()) {
+        if (Screen.hasControlDown()) {
             this.setTooltip(Tooltip.create(this.tooltipLongText.get()));
         } else {
             this.setTooltip(Tooltip.create(this.tooltipText.get()));
         }
 
-        super.extractContents(graphics, mouseX, mouseY, partialTicks);
+        super.renderWidget(guiGraphics, mouseX, mouseY, partialTick);
     }
 
     @Override
-    public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
-        if (!this.isActive()) {
+    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+        if (!this.isActive() || !this.visible || !this.isMouseOver(mouseX, mouseY)) {
             return false;
         }
 
-        if (!this.isMouseOver(event.x(), event.y())) {
-            return false;
-        }
-
-        CelesthydButtonAction actionToRun = switch (event.buttonInfo().button()) {
+        CelesthydButtonAction actionToRun = switch (button) {
             case 0 -> this.leftClickAction;
             case 1 -> this.rightClickAction;
             default -> null;
@@ -95,10 +91,10 @@ public class CelesthydButton extends ImageButton {
 
         if (actionToRun != null) {
             this.playDownSound(Minecraft.getInstance().getSoundManager());
-            actionToRun.sendToServer(this.parentGui.getMinecraft().player, event.buttonInfo().hasShiftDown());
+            actionToRun.sendToServer(this.parentGui.getMinecraft().player, Screen.hasShiftDown());
             return true;
         }
 
-        return true;
+        return super.mouseClicked(mouseX, mouseY, button);
     }
 }

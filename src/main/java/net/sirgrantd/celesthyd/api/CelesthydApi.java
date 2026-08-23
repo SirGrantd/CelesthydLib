@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
@@ -37,7 +37,7 @@ public final class CelesthydApi {
         CelesthydAttachmentSync.registerForAutoSync(attachmentSupplier);
     }
 
-    public static void sendToast(ServerPlayer player, Component title, Component subtitle, Identifier icon) {
+    public static void sendToast(ServerPlayer player, Component title, Component subtitle, ResourceLocation icon) {
         PacketDistributor.sendToPlayer(player, new ShowToastPayload(title, subtitle, Optional.ofNullable(icon)));
     }
 

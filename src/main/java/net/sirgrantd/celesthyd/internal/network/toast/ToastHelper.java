@@ -4,7 +4,7 @@ import net.minecraft.client.Minecraft;
 
 public class ToastHelper {
     public static void display(ShowToastPayload p) {
-        Minecraft.getInstance().getToastManager().addToast(
+        Minecraft.getInstance().getToasts().addToast(
                 new CelesthydToast(p.title(), p.subtitle(), p.icon()));
     }
 }

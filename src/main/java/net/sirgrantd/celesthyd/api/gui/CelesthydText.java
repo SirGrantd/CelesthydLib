@@ -1,7 +1,7 @@
 package net.sirgrantd.celesthyd.api.gui;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 
 public class CelesthydText {
@@ -17,11 +17,15 @@ public class CelesthydText {
         this.text = text;
     }
 
-    public void extractContents(GuiGraphicsExtractor guiGraphics) {
-        int x = parentGui.getLeftPos() + xOffset;
-        int y = parentGui.getTopPos() + yOffset;
+    public void render(GuiGraphics guiGraphics) {
+        int x = parentGui.getGuiLeft() + xOffset;
+        int y = parentGui.getGuiTop() + yOffset;
 
-        guiGraphics.text(
+        guiGraphics.drawString(
                 Minecraft.getInstance().font, this.text, x, y, -1, false);
+    }
+
+    public void renderText(GuiGraphics guiGraphics) {
+        render(guiGraphics);
     }
 }

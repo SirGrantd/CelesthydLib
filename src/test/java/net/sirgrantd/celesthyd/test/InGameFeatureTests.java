@@ -1,7 +1,7 @@
 package net.sirgrantd.celesthyd.test;
 
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleMenuProvider;
@@ -69,7 +69,7 @@ public class InGameFeatureTests {
                 serverPlayer.sendSystemMessage(Component.literal("§7Aguarde 40 ticks para o teste visual..."));
 
                 CelesthydApi.queueServerWork(40, () -> {
-                    Identifier icon = Identifier.withDefaultNamespace("textures/item/diamond.png");
+                    ResourceLocation icon = ResourceLocation.withDefaultNamespace("textures/item/diamond.png");
                     CelesthydApi.sendToast(
                             serverPlayer,
                             Component.literal("Teste Concluído"),

@@ -4,7 +4,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -19,7 +19,7 @@ import net.sirgrantd.celesthyd.test.TestRegistries;
 
 @EventBusSubscriber({ Dist.CLIENT })
 public class DisplayClient {
-    private static final Identifier DUMMY_TEXTURE = Identifier.fromNamespaceAndPath(CelesthydLib.MOD_ID,
+    private static final ResourceLocation DUMMY_TEXTURE = ResourceLocation.fromNamespaceAndPath(CelesthydLib.MOD_ID,
             "textures/gui/sprites/button_highlighted.png");
 
     @SubscribeEvent(priority = EventPriority.NORMAL)
@@ -36,10 +36,10 @@ public class DisplayClient {
             String text = String.valueOf(counter);
 
             CelesthydImage sgImage = new CelesthydImage(gui, 50, -25, DUMMY_TEXTURE);
-            sgImage.extractContents(event.getGuiGraphics(), 20, 20);
+            sgImage.render(event.getGuiGraphics(), 20, 20);
 
             CelesthydText sgText = new CelesthydText(gui, 100, -25, text);
-            sgText.extractContents(event.getGuiGraphics());
+            sgText.render(event.getGuiGraphics());
         }
     }
 }

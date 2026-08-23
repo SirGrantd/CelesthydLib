@@ -1,32 +1,35 @@
 package net.sirgrantd.celesthyd.api.gui;
 
-import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.RenderPipelines;
-import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceLocation;
 
 public class CelesthydImage {
 
     private final AbstractContainerScreen<?> parentGui;
     private final int xOffset;
     private final int yOffset;
-    private final Identifier texture;
+    private final ResourceLocation texture;
 
     public CelesthydImage(
             AbstractContainerScreen<?> parentGui,
             int xOffset,
             int yOffset,
-            Identifier texture) {
+            ResourceLocation texture) {
         this.parentGui = parentGui;
         this.xOffset = xOffset;
         this.yOffset = yOffset;
         this.texture = texture;
     }
 
-    public void extractContents(GuiGraphicsExtractor guiGraphics, int sizeX, int sizeY) {
-        int x = parentGui.getLeftPos() + xOffset;
-        int y = parentGui.getTopPos() + yOffset;
+    public void render(GuiGraphics guiGraphics, int sizeX, int sizeY) {
+        int x = parentGui.getGuiLeft() + xOffset;
+        int y = parentGui.getGuiTop() + yOffset;
 
-        guiGraphics.blit(RenderPipelines.GUI_TEXTURED, texture, x, y, 0, 0, sizeX, sizeY, sizeX, sizeY);
+        guiGraphics.blit(texture, x, y, 0, 0, sizeX, sizeY, sizeX, sizeY);
+    }
+
+    public void renderWidget(GuiGraphics guiGraphics, int sizeX, int sizeY) {
+        render(guiGraphics, sizeX, sizeY);
     }
 }
